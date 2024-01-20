@@ -2,7 +2,10 @@ const {Users}=require("../models");
 const express = require('express');
 const route=express.Router();
 const bcrypt = require('bcrypt');
-
+route.get("/",async(req,res)=>{
+    const users=await Users.findAll({attributes:{exclude:["password"]}});
+    res.json(users);
+})
 route.post("/log",async(req,res)=>{
     console.log(req.body);
     const users=await Users.findAll({where:{name:req.body.name}});
