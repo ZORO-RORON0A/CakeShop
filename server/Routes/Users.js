@@ -2,6 +2,8 @@ const {Users}=require("../models");
 const express = require('express');
 const route=express.Router();
 const bcrypt = require('bcrypt');
+const { json } = require("sequelize");
+const {sign} =require("jsonwebtoken");
 route.get("/",async(req,res)=>{
     const users=await Users.findAll({attributes:{exclude:["password"]}});
     res.json(users);
@@ -22,7 +24,9 @@ route.post("/log",async(req,res)=>{
     }
     if(a===1)
     {
+
         let user=await Users.findAll({where :{id:users[i].id},attributes:{exclude:["password"]}});
+        // const token=
         res.json({msg:"Logged in",user:user});
     }
     else{
