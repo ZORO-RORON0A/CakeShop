@@ -4,9 +4,14 @@ import { Button, Card, Form, Input, message } from "antd"
 import { useState } from "react";
 import { UserAddOutlined } from '@ant-design/icons'
 import { UserContext } from '../Helper/UserContext';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-    const {setusers}=useContext(UserContext);
+    const navigate=useNavigate();
+    const {setusers,users,getAuth}=useContext(UserContext);
+    if(users!==null){
+        navigate('/');
+    }
     const [form, setform] = useState(0);
     const Register = async (values) => {
         console.log(values);
@@ -18,19 +23,23 @@ const Login = () => {
         }
         else {
             message.success(result.data.msg);
-            setusers(result.data.user);
+            
         }
     }
     const Login = async (values) => {
         console.log(values);
 
         const result = await axios.post("http://localhost:8000/Users/log", values);
-        console.log(result);
+        
         if (result.data.err) {
             message.error(result.data.err);
         }
         else {
             message.success(result.data.msg);
+            localStorage.setItem("accessToken",result.data.token);
+            
+            setusers(result.data.user);
+            getAuth();
         }
     }
     return (

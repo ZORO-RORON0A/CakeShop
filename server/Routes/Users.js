@@ -4,6 +4,8 @@ const route=express.Router();
 const bcrypt = require('bcrypt');
 const { json } = require("sequelize");
 const {sign} =require("jsonwebtoken");
+const { validateToken } = require("../Middleware/Auth");
+
 route.get("/",async(req,res)=>{
     const users=await Users.findAll({attributes:{exclude:["password"]}});
     res.json(users);
@@ -26,8 +28,9 @@ route.post("/log",async(req,res)=>{
     {
 
         let user=await Users.findAll({where :{id:users[i].id},attributes:{exclude:["password"]}});
-        // const token=
-        res.json({msg:"Logged in",user:user});
+        console.log(user);
+        const token=sign({user},"UltraInstinct");
+        res.json({msg:"Logged in",user:user,token:token});
     }
     else{
         res.json({err:"Invalide Username or Password"});
@@ -58,4 +61,9 @@ route.post("/add",async(req,res)=>{
     
     
 });
+
+route.get("/auth",validateToken,async(req,res)=>{
+    res.json(req.user);
+})
+
 module.exports = route;

@@ -21,6 +21,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allownull: false,
       },
+      status:{
+        type: DataTypes.INTEGER,
+        allownull: false,
+        defaultValue:0
+      }
     }
     );
     Users.associate = (modal) => {

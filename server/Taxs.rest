@@ -1,0 +1,10 @@
+
+POST http://localhost:8000/Taxs/add 
+content-type: application/json
+
+{
+    "rate":12
+}
+
+###
+GET http://localhost:8000/Taxs/ HTTP/1.1
